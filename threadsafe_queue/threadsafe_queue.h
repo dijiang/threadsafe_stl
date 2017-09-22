@@ -60,7 +60,7 @@ namespace lyf{
     template<typename T>
     std::shared_ptr<T> threadsafe_queue<T>::try_pop()
     {
-        lock_guard<mutex> lock(_headLock);
+        std::lock_guard<mutex> lock(_headLock);
         if (_head.get() == get_tail())
             return nullptr;
         unique_ptr<node> old_head = move(_head);
@@ -103,7 +103,7 @@ namespace lyf{
     template<typename T>
     bool threadsafe_queue<T>::empty()
     {
-        std::lock_guard<mutex> headLock(_headLock);
+        lock_guard<mutex> headLock(_headLock);
         return _head.get() == get_tail();
     }
 }
